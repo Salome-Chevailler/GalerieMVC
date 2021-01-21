@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import galerie.dao.TableauRepository;
 import galerie.entity.Tableau;
+import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -85,12 +86,17 @@ public class TableauController {
     @GetMapping(path = "delete")
     public String supprimeUnTableauPuisMontreLaListe(@RequestParam("id") Tableau tableau, RedirectAttributes redirectInfo) {
         String message = "Le tableau '" + tableau.getTitre() + "' a bien été supprimé";
-        tableauDAO.delete(tableau); 
-        
+        try {
+            tableauDAO.delete(tableau); // Ici on peut avoir une erreur
+        } catch (DataIntegrityViolationException e) {
+            // violation de contrainte d'intégrité 
+            message = "Erreur : Impossible de supprimer le tableau '" + tableau.getTitre() + "' !";
+        }
         // RedirectAttributes permet de transmettre des informations lors d'une redirection,
         // Ici on transmet un message de succès ou d'erreur
         // Ce message est accessible et affiché dans la vue 'afficheTableau.html'
         redirectInfo.addFlashAttribute("message", message);
         return "redirect:show"; // on se redirige vers l'affichage de la liste
     }
+    
 }
