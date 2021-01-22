@@ -29,12 +29,12 @@ and open the template in the editor.
 				<label for="dimension">Dimension:</label>
 				<input type="text" th:field="*{dimension}" placeholder="Dimension du tableau"/>
 				<label for="auteur_id">Auteur:</label>
-                                <select name="auteur" id="auteur" onchange="this.form.submit()">
+                                <select name="auteur_id" size="1" th:field="*{auteur}" >
+                                    <option value="" selected="selected">Auteur inconnu</option>
                                     <option th:each="a: ${artistes}" th:value="${a.id}">[[${a.nom}]]</option>
-                                    <option value="">Auteur inconnu</option>
                                 </select>
                                 
-                                </datalist>
+                                
 			</div>
 		</form>		
 		<hr/>

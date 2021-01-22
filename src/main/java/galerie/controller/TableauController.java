@@ -5,6 +5,7 @@
  */
 package galerie.controller;
 
+import galerie.dao.ArtisteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,9 @@ public class TableauController {
     @Autowired
     private TableauRepository tableauDAO;
     
+    @Autowired
+    private ArtisteRepository artisteDAO;
+    
     @GetMapping(path = "show")
     public String afficheTousLesTableaux(Model model) {
         model.addAttribute("tableaux", tableauDAO.findAll());
@@ -44,7 +48,8 @@ public class TableauController {
      * @return le nom de la vue à afficher ('formulaireTableau.html')
      */
     @GetMapping(path = "add")
-    public String montreLeFormulairePourAjout(@ModelAttribute("tableau") Tableau tableau) {
+    public String montreLeFormulairePourAjout(@ModelAttribute("tableau") Tableau tableau, Model model) {
+        model.addAttribute("artistes", artisteDAO.getArtiste());
         return "formulaireTableau";
     }
     
